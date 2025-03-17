@@ -23,3 +23,10 @@ I implemented logic in the handle_connection method that conditionally returns d
 This approach treats the URI / as the only valid request. If the request line matches GET / HTTP/1.1, the server provides the usual hello.html with a success code; otherwise, it returns an error status and an error page.
 
 Additionally, the tutorial suggests refactoring the code to improve clarity and maintainability. By breaking the logic into smaller, reusable components rather than keeping everything in one function, the code becomes easier to understand and scales better in the future.
+
+
+## commit 4 Reflection Notes
+I simulated a performance bottleneck by adding a /sleep route to the web server. When this route is accessed, the server pauses for 10 seconds using thread::sleep() before sending a response. This experiment demonstrated how a single-threaded server behaves under delay or heavy processing load: if /sleep is opened in one browser tab, other requests—even those to the normal / route in another tab—are stalled until the delay finishes.
+
+This experience highlighted that single-threaded architectures are not scalable. In practical web servers, multithreading or asynchronous handling is essential to prevent slow or delayed requests from blocking others. It was a valuable lesson in understanding how concurrency and performance are intertwined in web server design.
+
