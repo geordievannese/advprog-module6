@@ -38,3 +38,11 @@ Within the main loop, we assigned tasks (closures) to the thread pool with pool.
 We chose the usize type for the thread count parameter in ThreadPool::new() because it represents non-negative whole numbers, which is appropriate since the number of threads can’t be negative. Moreover, usize works well for managing our worker threads stored in a vector.
 
 In the execute method, we specified the closure type as FnOnce(), indicating that the closure will only be executed a single time. This suits our scenario where each task handles one connection. The empty parentheses following FnOnce denote that the closure takes no arguments and returns nothing, mirroring a standard function without parameters.
+
+
+## Commit Bonus Reflection notes
+I introduced a build() function to the ThreadPool implementation as an alternative to the usual new() constructor. The purpose was to experiment with naming conventions and gain insights into API design practices in Rust. Functionally, build() mirrors new() by creating a channel, wrapping it in a Mutex and Arc, and initializing the worker threads.
+
+Choosing a name like build() can be beneficial when object creation involves a more intricate setup or when there's potential to evolve into a builder pattern. This approach is common in many Rust libraries and frameworks. Even though in this instance both new() and build() execute the same steps, using build() can make the code more expressive for developers.
+
+Ultimately, the distinction between new() and build() is mostly about naming conventions—new() is idiomatic for straightforward object creation, whereas build() suggests a more configurable or elaborate construction process, typical of builder patterns.
