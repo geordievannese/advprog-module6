@@ -14,3 +14,12 @@ Finally, by collecting these lines into a Vec<String>, I got a clear, line-by-li
 I discovered how to serve a proper HTML file instead of just plain text by adjusting the handle_connection method. Using fs::read_to_string() made it straightforward to load the contents of hello.html into memory, and by including the correct headers along with the file’s contents in the HTTP response, browsers could render the page correctly.
 
 I also learned the importance of the Content-Length header. Leaving it out can cause some browsers to display the page incorrectly. Moreover, I realized that an HTTP response must follow a specific format, starting with a status line (e.g., HTTP/1.1 200 OK), then headers, an empty line, and finally the response body.
+
+## Commit 3 Reflection Notes
+![alt text](assets/Images/commit3.png)
+
+I implemented logic in the handle_connection method that conditionally returns different responses based on the request path. The idea is to inspect the request line from the browser and serve the appropriate page: if the request is for /, the server responds with a 200 OK status and displays hello.html; for any other path (like /bad), it returns a 404 NOT FOUND status along with a custom 404.html file.
+
+This approach treats the URI / as the only valid request. If the request line matches GET / HTTP/1.1, the server provides the usual hello.html with a success code; otherwise, it returns an error status and an error page.
+
+Additionally, the tutorial suggests refactoring the code to improve clarity and maintainability. By breaking the logic into smaller, reusable components rather than keeping everything in one function, the code becomes easier to understand and scales better in the future.
