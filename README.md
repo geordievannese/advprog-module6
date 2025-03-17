@@ -30,3 +30,11 @@ I simulated a performance bottleneck by adding a /sleep route to the web server.
 
 This experience highlighted that single-threaded architectures are not scalable. In practical web servers, multithreading or asynchronous handling is essential to prevent slow or delayed requests from blocking others. It was a valuable lesson in understanding how concurrency and performance are intertwined in web server design.
 
+## commit 5 Reflection Notes
+n this section of the project, we boosted our server's performance by implementing a ThreadPool to manage multiple connections concurrently. Instead of spawning a new thread for every request, we created a fixed number of threads—four in our case—using ThreadPool::new(4). These threads remain active and are reused to efficiently handle incoming tasks.
+
+Within the main loop, we assigned tasks (closures) to the thread pool with pool.execute(). This functions similarly to Rust’s thread::spawn(), where a closure is executed; however, by reusing existing worker threads instead of creating new ones for each task, we avoid the overhead associated with thread creation.
+
+We chose the usize type for the thread count parameter in ThreadPool::new() because it represents non-negative whole numbers, which is appropriate since the number of threads can’t be negative. Moreover, usize works well for managing our worker threads stored in a vector.
+
+In the execute method, we specified the closure type as FnOnce(), indicating that the closure will only be executed a single time. This suits our scenario where each task handles one connection. The empty parentheses following FnOnce denote that the closure takes no arguments and returns nothing, mirroring a standard function without parameters.
